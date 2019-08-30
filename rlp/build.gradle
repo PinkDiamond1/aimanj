@@ -1,0 +1,7 @@
+
+description 'Matrix Recursive Length Prefix (RLP) encoding for serializing objects'
+
+dependencies {
+    compile project(':utils')
+    compile group: 'commons-beanutils', name: 'commons-beanutils', version: '1.8.3'
+}

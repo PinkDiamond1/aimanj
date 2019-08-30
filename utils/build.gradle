@@ -1,0 +1,6 @@
+
+description 'Minimal set of aimanj utility classes'
+
+dependencies {
+    compile "org.bouncycastle:bcprov-jdk15on:$bouncycastleVersion"
+}
