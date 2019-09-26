@@ -2,12 +2,6 @@ package org.aimanj.protocol.core.methods.response;
 
 import java.math.BigInteger;
 
-/**
- * @program: base
- * @description:
- * @author: Li.Jie
- * @create: 2019-07-19 11:04
- **/
 public class MatrixCoinConfig {
     public String CoinRange;
     public String CoinType;

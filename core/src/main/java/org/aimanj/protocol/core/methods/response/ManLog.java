@@ -15,18 +15,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.aimanj.protocol.ObjectMapperFactory;
 import org.aimanj.protocol.core.Response;
 
-/**
- * Log object returned by:
- * <ul>
- * <li>man_getFilterChanges</li>
- * <li>man_getFilterLogs</li>
- * <liman_getLogs</li>
- * </ul>
- *
- * <p>See
- * <a href="https://github.com/Matrix/wiki/wiki/JSON-RPCman_getfilterchanges">docs</a>
- * for further details.</p>
- */
 public class ManLog extends Response<List<ManLog.LogResult>> {
 
     @Override

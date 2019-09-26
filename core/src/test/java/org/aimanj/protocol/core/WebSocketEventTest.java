@@ -7,11 +7,11 @@ import java.util.Collections;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.aimanj.protocol.AiManj;
 import org.junit.Before;
 import org.junit.Test;
 
 import org.aimanj.protocol.ObjectMapperFactory;
-import org.aimanj.protocol.aiManj;
 import org.aimanj.protocol.websocket.WebSocketClient;
 import org.aimanj.protocol.websocket.WebSocketListener;
 import org.aimanj.protocol.websocket.WebSocketService;
@@ -32,7 +32,7 @@ public class WebSocketEventTest {
             webSocketClient, true
     );
 
-    private aiManj aiManj = aiManj.build(webSocketService);
+    private AiManj aiManj = AiManj.build(webSocketService);
 
     private final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
 
@@ -63,7 +63,7 @@ public class WebSocketEventTest {
         aiManj.newHeadsNotifications();
 
         verify(webSocketClient).send(matches(
-                "\\{\"jsonrpc\":\"2.0\",\"method\":\man_subscribe\","
+                "\\{\"jsonrpc\":\"2.0\",\"method\":man_subscribe\","
                         + "\"params\":\\[\"newHeads\"],\"id\":[0-9]{1,}}"));
     }
 
@@ -72,7 +72,7 @@ public class WebSocketEventTest {
         aiManj.logsNotifications(new ArrayList<>(), new ArrayList<>());
 
         verify(webSocketClient).send(matches(
-                "\\{\"jsonrpc\":\"2.0\",\"method\":\man_subscribe\","
+                "\\{\"jsonrpc\":\"2.0\",\"method\":man_subscribe\","
                         + "\"params\":\\[\"logs\",\\{}],\"id\":[0-9]{1,}}"));
     }
 
@@ -83,7 +83,7 @@ public class WebSocketEventTest {
                 Collections.singletonList("0x2"));
 
         verify(webSocketClient).send(matches(
-                "\\{\"jsonrpc\":\"2.0\",\"method\":\man_subscribe\","
+                "\\{\"jsonrpc\":\"2.0\",\"method\":man_subscribe\","
                         + "\"params\":\\[\"logs\",\\{\"address\":\\[\"0x1\"],"
                         + "\"topics\":\\[\"0x2\"]}],\"id\":[0-9]{1,}}"));
     }

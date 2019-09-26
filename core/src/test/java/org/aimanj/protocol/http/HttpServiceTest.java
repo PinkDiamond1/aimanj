@@ -77,7 +77,7 @@ public class HttpServiceTest {
         HttpService mockedHttpService = new HttpService(httpClient);
 
         Request<String, ManBlockNumber> request = new Request<>(
-                man_blockNumber1",
+                "man_blockNumber1",
                 Collections.emptyList(),
                 mockedHttpService,
                 ManBlockNumber.class);
@@ -97,14 +97,14 @@ public class HttpServiceTest {
     @Test(expected = UnsupportedOperationException.class)
     public void subscriptionNotSupported() {
         Request<Object, ManSubscribe> subscribeRequest = new Request<>(
-                man_subscribe",
+                "man_subscribe",
                 Arrays.asList("newHeads", Collections.emptyMap()),
                 httpService,
                 ManSubscribe.class);
 
         httpService.subscribe(
                 subscribeRequest,
-                man_unsubscribe",
+                "man_unsubscribe",
                 NewHeadsNotification.class
         );
     }

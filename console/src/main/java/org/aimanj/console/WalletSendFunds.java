@@ -14,7 +14,7 @@ import org.aimanj.protocol.core.methods.response.TransactionReceipt;
 import org.aimanj.protocol.core.methods.response.AiManjClientVersion;
 import org.aimanj.protocol.exceptions.TransactionException;
 import org.aimanj.protocol.http.HttpService;
-import org.aimanj.protocol.infura.InfuraHttpService;
+//import org.aimanj.protocol.infura.InfuraHttpService;
 import org.aimanj.tx.Transfer;
 import org.aimanj.utils.Convert;
 
@@ -135,9 +135,7 @@ public class WalletSendFunds extends WalletManager {
         AiManj aiManj;
         if (clientAddress.equals("")) {
             aiManj = AiManj.build(new HttpService());
-        } else if (clientAddress.contains("infura.io")) {
-            aiManj = AiManj.build(new InfuraHttpService(clientAddress));
-        } else {
+        }else {
             aiManj = AiManj.build(new HttpService(clientAddress));
         }
 

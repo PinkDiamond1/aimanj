@@ -6,6 +6,7 @@ buildscript {
     ext.okhttpVersion = '3.8.1'
     ext.rxjavaVersion = '2.2.2'
     ext.slf4jVersion = '1.7.25'
+//    ext.beanutilsVersion = '1.8.3'
     ext.javaWebSocketVersion = '1.3.8'
     ext.picocliVersion = '3.0.0'
 
@@ -70,8 +71,10 @@ allprojects {
         options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
     }
 
+
     javadoc {
         options.encoding = 'UTF-8'
+        options.addStringOption("charset", "UTF-8")
     }
 
     jacoco {
@@ -143,6 +146,8 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
     }
 
     publishing {
+        apply plugin: 'maven-publish'
+        apply plugin: 'signing'
         publications {
             mavenJava(MavenPublication) {
                 from components.java
@@ -158,11 +163,13 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
                 artifact javadocJar {
                     classifier 'javadoc'
                 }
-
+                signing {
+                    sign publishing.publications.mavenJava
+                }
                 pom {
                     name = project.name
                     description = project.description
-                    url = "https://github.com/aimanj/aimanj"
+                    url = "https://github.com/MatrixAINetwork/aimanj"
                     licenses {
                         license {
                             name = "The Apache License, Version 2.0"
@@ -172,16 +179,27 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
                     }
                     developers {
                         developer {
-                            id = "conor10"
-                            name = "Conor Svensson"
-                            email = "conor10@gmail.com"
+                            id = "lijie"
+                            name = "lijie"
+                            email = "jieli@matrix.io"
                         }
                     }
                     scm {
-                        connection = "scm:git:https://github.com/aimanj/aimanj.git"
-                        developerConnection = "scm:git://github.com/aimanj/aimanj.git"
-                        url = "https://github.com/aimanj/aimanj.git"
+                        connection = "scm:git:https://github.com/MatrixAINetwork/aimanj.git"
+                        developerConnection = "scm:git://github.com/MatrixAINetwork/aimanj.git"
+                        url = "https://github.com/MatrixAINetwork/aimanj.git"
                     }
+                }
+            }
+        }
+        repositories {
+            maven {
+                //指定要上传的maven私服仓库
+                url = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
+                //认证用户和密码
+                credentials {
+                    username 'man'
+                    password 'Matrix@178@178'
                 }
             }
         }
@@ -208,12 +226,12 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
                     name 'aimanj'
                     packaging 'jar'
                     description project.description
-                    url 'https://aimanj.io'
+                    url 'https://github.com/MatrixAINetwork/aimanj.git'
 
                     scm {
-                        connection 'scm:git:https://github.com/aimanj/aimanj.git'
-                        url 'https://github.com/aimanj/aimanj.git'
-                        developerConnection 'scm:git://github.com/aimanj/aimanj.git'
+                        connection 'scm:git:https://github.com/MatrixAINetwork/aimanj.git'
+                        url 'https://github.com/MatrixAINetwork/aimanj.git'
+                        developerConnection 'scm:git://github.com/MatrixAINetwork/aimanj.git'
                     }
 
                     licenses {
@@ -226,9 +244,9 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
 
                     developers {
                         developer {
-                            id 'conor10'
-                            name 'Conor Svensson'
-                            email 'conor10@gmail.com'
+                            id 'lijie'
+                            name 'lijie'
+                            email 'jieli@matrix.io'
                         }
                     }
                 }
@@ -247,9 +265,9 @@ configure(subprojects.findAll { it.name != 'integration-tests' }) {
             desc = project.description
             userOrg = 'aimanj'
             licenses = ['Apache-2.0']
-            issueTrackerUrl = 'https://github.com/aimanj/aimanj/issues'
-            vcsUrl = 'https://github.com/aimanj/aimanj.git'
-            websiteUrl = 'https://aimanj.io'
+            issueTrackerUrl = 'https://github.com/MatrixAINetwork/aimanj/issues'
+            vcsUrl = 'https://github.com/MatrixAINetwork/aimanj.git'
+            websiteUrl = 'https://github.com/MatrixAINetwork/aimanj'
             publicDownloadNumbers = true
 
             version {

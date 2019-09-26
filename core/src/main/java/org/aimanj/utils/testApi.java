@@ -10,10 +10,9 @@ import java.util.Optional;
 
 public class testApi {
     public static void main(String[] args) throws Exception {
-        AiManj aiManj =  AiManj.build(new HttpService("https://testnet.matrix.io"));
-        BigInteger b = new BigInteger("0");
-        ManTransaction manTransaction = aiManj.manGetTransactionByHash("0xe33e99efdc80a87ce9e85b7757180579ac7fb4ca597b215087748d0fe2f1a7a6").send();
-        Optional<Transaction> transaction = manTransaction.getTransaction();
-        System.out.println(transaction);
+        AiManj aiManj =  AiManj.build(new HttpService("https://api85.matrix.io"));
+        ManBlock block = aiManj.manGetBlockByNumber(DefaultBlockParameterName.LATEST, false).send();
+//        ManBlock.TransactionObject aa = (ManBlock.TransactionObject)block.getBlock().getTransactions().get(0);
+        System.out.println(block);
     }
 }

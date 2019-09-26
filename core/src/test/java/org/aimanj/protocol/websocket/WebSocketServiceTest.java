@@ -419,7 +419,7 @@ public class WebSocketServiceTest {
 
     private Flowable<NewHeadsNotification> subscribeToEvents() {
         subscribeRequest = new Request<>(
-                man_subscribe",
+                "man_subscribe",
                 Arrays.asList("newHeads", Collections.emptyMap()),
                 service,
                 ManSubscribe.class);
@@ -427,7 +427,7 @@ public class WebSocketServiceTest {
 
         return service.subscribe(
                 subscribeRequest,
-                man_unsubscribe",
+                "man_unsubscribe",
                 NewHeadsNotification.class
         );
     }
@@ -487,7 +487,7 @@ public class WebSocketServiceTest {
         service.onWebSocketMessage(
                 "{"
                         + "  \"jsonrpc\":\"2.0\","
-                        + "  \"method\":\man_subscription\","
+                        + "  \"method\":man_subscription\","
                         + "  \"params\":{"
                         + "    \"subscription\":\"0xcd0c3e8af590364c09d0fa6a1210faf5\","
                         + "    \"result\":{"

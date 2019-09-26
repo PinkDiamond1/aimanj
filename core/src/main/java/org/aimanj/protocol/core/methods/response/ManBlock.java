@@ -13,10 +13,10 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.aimanj.protocol.ObjectMapperFactory;
 import org.aimanj.protocol.core.Response;
 import org.aimanj.utils.Numeric;
+import org.apache.commons.beanutils.ConvertUtils;
 
 /**
  * Block object returned by:
@@ -506,7 +506,7 @@ public class ManBlock extends Response<ManBlock.Block> {
         public TransactionObject(String hash, String nonce, String blockHash, String blockNumber,
                                  String transactionIndex, String from, String to, String value,
                                  String gasPrice, String gas, String input, String creates,
-                                 String publicKey, String raw, String r, String s, int v,
+                                 String publicKey, String raw, String r, String s, long v,
                                  String Currency, BigInteger TxEnterType, String CommitTime, Boolean IsEntrustTx,
                                  int matrixType, List extra_to) {
             super(hash, nonce, blockHash, blockNumber, transactionIndex, from, to, value,
@@ -533,7 +533,7 @@ public class ManBlock extends Response<ManBlock.Block> {
             List<TransactionResult> transactionResults = new ArrayList<>();
             JsonToken nextToken = jsonParser.nextToken();
             if (nextToken == JsonToken.FIELD_NAME) {
-                Map<String, List> map =  objectReader.readValue(jsonParser, Map.class);
+                Map<String, List<Object>> map =  objectReader.readValue(jsonParser, Map.class);
                 Set<String> set = map.keySet(); //取出所有的key值
                 for (String key:set) {
                     List<Object> list = map.get(key);
@@ -544,11 +544,9 @@ public class ManBlock extends Response<ManBlock.Block> {
                             transactionResults.add(transactionHash);
                         } else {
                             try {
-                                Object obj = Transaction.class.newInstance();
-                                BeanUtils.populate(obj, (Map) list.get(i));
-                                System.out.println(obj);
-                                TransactionObject transactionObject = (TransactionObject) mapToObject((Map)list.get(i), TransactionObject.class);
-                                transactionResults.add(transactionObject);
+                                TransactionObject obj = new TransactionObject();
+                                obj = mapToObjModle(obj, (Map) list.get(i));
+                                transactionResults.add(obj);
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -575,25 +573,6 @@ public class ManBlock extends Response<ManBlock.Block> {
             return transactionResults;
         }
     }
-    public static Object mapToObject(Map<String, Object> map, Class<?> beanClass) throws Exception {
-        if (map == null)
-            return null;
-
-        Object obj = beanClass.newInstance();
-
-        Field[] fields = obj.getClass().getDeclaredFields();
-        for (Field field : fields) {
-            int mod = field.getModifiers();
-            if(Modifier.isStatic(mod) || Modifier.isFinal(mod)){
-                continue;
-            }
-
-            field.setAccessible(true);
-            field.set(obj, map.get(field.getName()));
-        }
-
-        return obj;
-    }
     public static class ResponseDeserialiser extends JsonDeserializer<Block> {
 
         private ObjectReader objectReader = ObjectMapperFactory.getObjectReader();
@@ -607,6 +586,79 @@ public class ManBlock extends Response<ManBlock.Block> {
             } else {
                 return null;  // null is wrapped by Optional in above getter
             }
+        }
+    }
+
+
+
+    /**
+     * map转对象方法
+     *
+     * @param entity
+     * @param params
+     * @return
+     */
+    public static <T> T mapToObjModle(T entity, Map<String, Object> params) {
+        Class<?> clazz = entity.getClass();
+        // 得到对象的字段
+        List<Field> fields = getAccessibleFields(clazz);
+        // 迭代字段
+        for (Field f : fields) {
+            String name = f.getName();
+            Object objVal = params.get(name);
+            // 找到对应值，进行转化设置
+            if (objVal != null) {
+                try {
+                    if (f.getType().equals(String.class)) {
+                        objVal = String.valueOf(objVal);
+                    } else if (!f.getType().isAssignableFrom(objVal.getClass())) {
+                        if (!String.valueOf(objVal).equals("")) {
+                            objVal = ConvertUtils.convert(objVal, f.getType());
+                        } else {
+                            objVal = null;
+                        }
+                    }
+                    f.set(entity, objVal);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+        return entity;
+    }
+
+    /**
+     * 循环向上转型, 获取对象所有的DeclaredField
+     *
+     * 如向上转型到Object仍无法找到, 返回null.
+     */
+    public static List<Field> getAccessibleFields(final Class<?> clazz) {
+        List<Field> fields = new ArrayList<>();
+        for (Class<?> superClass = clazz; superClass != Object.class; superClass = superClass.getSuperclass()) {
+            for (Field f : superClass.getDeclaredFields()) {
+                boolean hasInSubClass = false;
+                for (Field f2 : fields) {
+                    if (f2.getName().equals(f.getName())) {
+                        hasInSubClass = true;
+                        break;
+                    }
+                }
+                if (!hasInSubClass) {
+                    makeAccessible(f);
+                    fields.add(f);
+                }
+            }
+        }
+        return fields;
+    }
+
+    /**
+     * 改变private/protected的成员变量为public，尽量不调用实际改动的语句，避免JDK的SecurityManager抱怨。
+     */
+    public static void makeAccessible(Field field) {
+        if ((!Modifier.isPublic(field.getModifiers()) || !Modifier.isPublic(field.getDeclaringClass().getModifiers())
+                || Modifier.isFinal(field.getModifiers())) && !field.isAccessible()) {
+            field.setAccessible(true);
         }
     }
 }

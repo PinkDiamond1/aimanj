@@ -18,7 +18,7 @@ import org.junit.Test;
 import org.mockito.stubbing.OngoingStubbing;
 
 import org.aimanj.protocol.ObjectMapperFactory;
-import org.aimanj.protocol.aiManj;
+import org.aimanj.protocol.AiManj;
 import org.aimanj.protocol.AiManjService;
 import org.aimanj.protocol.core.DefaultBlockParameterNumber;
 import org.aimanj.protocol.core.Request;
@@ -38,14 +38,14 @@ public class JsonRpc2_0RxTest {
 
     private final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
 
-    private aiManj aiManj;
+    private AiManj aiManj;
 
     private AiManjService aiManjService;
 
     @Before
     public void setUp() {
         aiManjService = mock(AiManjService.class);
-        aiManj = aiManj.build(aiManjService, 1000, Executors.newSingleThreadScheduledExecutor());
+        aiManj = AiManj.build(aiManjService, 1000, Executors.newSingleThreadScheduledExecutor());
     }
 
     @Test

@@ -24,7 +24,7 @@ public class Transaction {
     private String gas;
     private String input;
 //    private String creates;
-    private String publicKey;
+//    private String publicKey;
 //    private String raw;
     private String r;
     private String s;
@@ -56,7 +56,7 @@ public class Transaction {
         this.gas = gas;
         this.input = input;
 //        this.creates = creates;
-        this.publicKey = publicKey;
+//        this.publicKey = publicKey;
 //        this.raw = raw;
         this.r = r;
         this.s = s;
@@ -189,13 +189,13 @@ public class Transaction {
 //        this.creates = creates;
 //    }
 
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
+//    public String getPublicKey() {
+//        return publicKey;
+//    }
+//
+//    public void setPublicKey(String publicKey) {
+//        this.publicKey = publicKey;
+//    }
 //
 //    public String getRaw() {
 //        return raw;
@@ -358,10 +358,10 @@ public class Transaction {
 //                ? !getCreates().equals(that.getCreates()) : that.getCreates() != null) {
 //            return false;
 //        }
-        if (getPublicKey() != null
-                ? !getPublicKey().equals(that.getPublicKey()) : that.getPublicKey() != null) {
-            return false;
-        }
+//        if (getPublicKey() != null
+//                ? !getPublicKey().equals(that.getPublicKey()) : that.getPublicKey() != null) {
+//            return false;
+//        }
 //        if (getRaw() != null ? !getRaw().equals(that.getRaw()) : that.getRaw() != null) {
 //            return false;
 //        }
@@ -386,7 +386,7 @@ public class Transaction {
         result = 31 * result + (getGasRaw() != null ? getGasRaw().hashCode() : 0);
         result = 31 * result + (getInput() != null ? getInput().hashCode() : 0);
 //        result = 31 * result + (getCreates() != null ? getCreates().hashCode() : 0);
-        result = 31 * result + (getPublicKey() != null ? getPublicKey().hashCode() : 0);
+//        result = 31 * result + (getPublicKey() != null ? getPublicKey().hashCode() : 0);
 //        result = 31 * result + (getRaw() != null ? getRaw().hashCode() : 0);
         result = 31 * result + (getR() != null ? getR().hashCode() : 0);
         result = 31 * result + (getS() != null ? getS().hashCode() : 0);
